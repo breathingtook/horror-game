@@ -1,0 +1,108 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2580
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 <!DOCTYPE html>\
+<html lang="en">\
+<head>\
+<meta charset="UTF-8">\
+<title>/// BROKEN HOUSE ///</title>\
+<style>\
+body\{margin:0;background:#000;color:#fff;font-family:monospace;overflow:hidden\}\
+canvas\{display:block;background:#050505\}\
+#ui\{position:fixed;top:10px;left:10px;font-size:14px\}\
+#menu\{position:fixed;inset:0;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center\}\
+button\{margin:5px;padding:10px;background:#111;color:#fff;border:1px solid #333\}\
+.glitch\{animation:flicker .1s infinite\}\
+@keyframes flicker\{0%\{opacity:1\}50%\{opacity:.4\}100%\{opacity:1\}\}\
+</style>\
+</head>\
+<body>\
+\
+<div id="menu">\
+<h1>BROKEN HOUSE</h1>\
+<button onclick="start(1)">Practice</button>\
+<button onclick="start(2)">Easy</button>\
+<button onclick="start(3)">Hard</button>\
+<button onclick="start(4)">Just A Bit Late</button>\
+<button onclick="start(5)">?///33\'a3\'a3\'a3</button>\
+</div>\
+\
+<div id="ui">Candles: <span id="c">0</span> | Amulets: <span id="a">0</span> | Mode: <span id="m">-</span></div>\
+\
+<canvas id="game" width="900" height="500"></canvas>\
+\
+<script>\
+const c=document.getElementById("game"),x=c.getContext("2d");\
+\
+let p,m=[],candles=0,amulets=0,mode=0,keys=\{\};\
+\
+document.onkeydown=e=>keys[e.key]=1;\
+document.onkeyup=e=>keys[e.key]=0;\
+\
+function start(md)\{\
+mode=md;\
+p=\{x:450,y:250,s:3\};\
+m=[];\
+let n=md==1?1:md==2?1:md==3?3:4;\
+\
+for(let i=0;i<n;i++)\
+m.push(\{x:Math.random()*900,y:Math.random()*500,s:1+md*0.4\});\
+\
+document.getElementById("menu").style.display="none";\
+\}\
+\
+function update()\{\
+if(keys.w)p.y-=p.s;\
+if(keys.s)p.y+=p.s;\
+if(keys.a)p.x-=p.s;\
+if(keys.d)p.x+=p.s;\
+\
+m.forEach(e=>\{\
+let dx=p.x-e.x,dy=p.y-e.y,d=Math.sqrt(dx*dx+dy*dy);\
+if(d<200)\{e.x+=dx/d*e.s;e.y+=dy/d*e.s;\}\
+if(d<10)reset();\
+\});\
+\
+if(Math.random()<0.01)candles++;\
+if(Math.random()<0.005)amulets++;\
+\
+if(Math.random()<0.02)\{\
+c.classList.add("glitch");\
+setTimeout(()=>c.classList.remove("glitch"),100);\
+\}\
+\}\
+\
+function draw()\{\
+x.fillStyle="#000";\
+x.fillRect(0,0,900,500);\
+\
+x.fillStyle="#0f0";\
+x.fillRect(p.x,p.y,10,10);\
+\
+x.fillStyle="#f00";\
+m.forEach(e=>x.fillRect(e.x,e.y,12,12));\
+\
+document.getElementById("c").innerText=candles;\
+document.getElementById("a").innerText=amulets;\
+document.getElementById("m").innerText=mode;\
+\}\
+\
+function loop()\{\
+update();draw();\
+requestAnimationFrame(loop);\
+\}\
+loop();\
+\
+function reset()\{\
+p.x=450;p.y=250;\
+candles=0;amulets=0;\
+alert("YOU DIED");\
+\}\
+</script>\
+\
+</body>\
+</html>}
